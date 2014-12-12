@@ -22,7 +22,7 @@ function varargout = interfaceforarmsimulation(varargin)
 
 % Edit the above text to modify the response to help interfaceforarmsimulation
 
-% Last Modified by GUIDE v2.5 07-Dec-2014 18:28:18
+% Last Modified by GUIDE v2.5 12-Dec-2014 11:40:30
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -59,13 +59,14 @@ handles.metricdata.joint2 = 0;
 handles.metricdata.joint3 = 0;
 handles.metricdata.joint4 = 0;
 handles.metricdata.joint5 = 0;
+handles.metricdata.toggleliveforwardkinematics = 0;
 
 set(handles.joint1, 'String', handles.metricdata.joint1);
 set(handles.joint2, 'String', handles.metricdata.joint2);
 set(handles.joint3, 'String', handles.metricdata.joint3);
 set(handles.joint4, 'String', handles.metricdata.joint4);
 set(handles.joint5, 'String', handles.metricdata.joint5);
-
+%set(handles.toggleliveforward, 'String', handles.metricdata.toggleliveforward);
 
 % Update handles structure
 guidata(hObject, handles);
@@ -117,52 +118,8 @@ theta3=handles.metricdata.joint3;    %from 0     to -170 degrees
 theta4=handles.metricdata.joint4;    %from -180  to 0 degrees
 theta5=handles.metricdata.joint5;       %from 0     to 180 degrees
 
-q1 = theta1*pi/180;
-q2 = theta2*pi/180;
-q3 = theta3*pi/180;
-q4 = theta4*pi/180;
-q5 = theta5*pi/180;
+forwardKinematics( theta1, theta2, theta3, theta4, theta5 )
 
-%% Link Lengths
-d1 = 80;
-a3 = 155;
-a4 = 153;
-d5 = 33;
-dE = 65;
-
-%% Plot the robotic arm
-x0 = 0;
-y0 = 0;
-z0 = d1;
-
-x1 = 0 ;
-y1 = 0 ;
-z1 = d1 ;
-
-x2 =  a3*cos(q1)*cos(q2);
-y2 =  a3*cos(q2)*sin(q1);
-z2 =  d1 + a3*sin(q2);
-
-x3= cos(q1)*(a4*cos(q2 + q3) + a3*cos(q2));
-y3= sin(q1)*(a4*cos(q2 + q3) + a3*cos(q2));
-z3= d1 + a4*sin(q2 + q3) + a3*sin(q2);
-
-x4 =  cos(q1)*(a4*cos(q2 + q3) + a3*cos(q2) - d5*sin(q2 + q3 + q4));
-y4 = sin(q1)*(a4*cos(q2 + q3) + a3*cos(q2) - d5*sin(q2 + q3 + q4));
-z4 =   d1 + a4*sin(q2 + q3) + a3*sin(q2) + d5*cos(q2 + q3 + q4);
-
-xe =  cos(q1)*(a4*cos(q2 + q3) + a3*cos(q2) - (d5+dE)*sin(q2 + q3 + q4))
-ye =  sin(q1)*(a4*cos(q2 + q3) + a3*cos(q2) - (d5+dE)*sin(q2 + q3 + q4))
-ze =  d1 + a4*sin(q2 + q3) + a3*sin(q2) + (d5+dE)*cos(q2 + q3 + q4)
-
-i=1;
-    xx = [ x0(i); x1(i); x2(i); x3(i); x4(i); xe(i) ];
-    yy = [ y0(i); y1(i); y2(i); y3(i); y4(i); ye(i) ];
-    zz = [ z0(i); z1(i); z2(i); z3(i); z4(i); ze(i) ];
-    
-    
-    plot3(xx,yy,zz,'ko-','Linewidth',4)
-    axis([-300 300 -300 300 -300 300])
 end
 
 
@@ -240,6 +197,17 @@ function joint1_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.metricdata.joint1 = get(hObject,'Value');
+
+if isequal (handles.metricdata.toggleliveforwardkinematics, 1)
+    theta1=handles.metricdata.joint1       %from -100  to 90 degrees
+    theta2=handles.metricdata.joint2;     %from 0     to 180 degrees
+    theta3=handles.metricdata.joint3;    %from 0     to -170 degrees
+    theta4=handles.metricdata.joint4;    %from -180  to 0 degrees
+    theta5=handles.metricdata.joint5;       %from 0     to 180 degrees
+
+    forwardKinematics( theta1, theta2, theta3, theta4, theta5 )
+end
+
 guidata(hObject,handles)
 %display(handles.metricdata.joint1);
 
@@ -261,6 +229,17 @@ function joint2_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.metricdata.joint2 = get(hObject,'Value');
+
+if isequal (handles.metricdata.toggleliveforwardkinematics, 1)
+    theta1=handles.metricdata.joint1       %from -100  to 90 degrees
+    theta2=handles.metricdata.joint2;     %from 0     to 180 degrees
+    theta3=handles.metricdata.joint3;    %from 0     to -170 degrees
+    theta4=handles.metricdata.joint4;    %from -180  to 0 degrees
+    theta5=handles.metricdata.joint5;       %from 0     to 180 degrees
+
+    forwardKinematics( theta1, theta2, theta3, theta4, theta5 )
+end
+
 guidata(hObject,handles)
 
 % --- Executes during object creation, after setting all properties.
@@ -281,6 +260,17 @@ function joint3_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.metricdata.joint3 = get(hObject,'Value');
+
+if isequal (handles.metricdata.toggleliveforwardkinematics, 1)
+    theta1=handles.metricdata.joint1       %from -100  to 90 degrees
+    theta2=handles.metricdata.joint2;     %from 0     to 180 degrees
+    theta3=handles.metricdata.joint3;    %from 0     to -170 degrees
+    theta4=handles.metricdata.joint4;    %from -180  to 0 degrees
+    theta5=handles.metricdata.joint5;       %from 0     to 180 degrees
+
+    forwardKinematics( theta1, theta2, theta3, theta4, theta5 )
+end
+
 guidata(hObject,handles)
 
 % --- Executes during object creation, after setting all properties.
@@ -301,6 +291,17 @@ function joint4_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.metricdata.joint4 = get(hObject,'Value');
+
+if isequal (handles.metricdata.toggleliveforwardkinematics, 1)
+    theta1=handles.metricdata.joint1       %from -100  to 90 degrees
+    theta2=handles.metricdata.joint2;     %from 0     to 180 degrees
+    theta3=handles.metricdata.joint3;    %from 0     to -170 degrees
+    theta4=handles.metricdata.joint4;    %from -180  to 0 degrees
+    theta5=handles.metricdata.joint5;       %from 0     to 180 degrees
+
+    forwardKinematics( theta1, theta2, theta3, theta4, theta5 )
+end
+
 guidata(hObject,handles)
 
 % --- Executes during object creation, after setting all properties.
@@ -321,6 +322,17 @@ function joint5_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.metricdata.joint5 = get(hObject,'Value');
+
+if isequal (handles.metricdata.toggleliveforwardkinematics, 1)
+    theta1=handles.metricdata.joint1       %from -100  to 90 degrees
+    theta2=handles.metricdata.joint2;     %from 0     to 180 degrees
+    theta3=handles.metricdata.joint3;    %from 0     to -170 degrees
+    theta4=handles.metricdata.joint4;    %from -180  to 0 degrees
+    theta5=handles.metricdata.joint5;       %from 0     to 180 degrees
+
+    forwardKinematics( theta1, theta2, theta3, theta4, theta5 )
+end
+
 guidata(hObject,handles)
 
 % --- Executes during object creation, after setting all properties.
@@ -687,14 +699,16 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
 end
 
 
-% --- Executes on button press in togglelive.
-function togglelive_Callback(hObject, eventdata, handles)
-% hObject    handle to togglelive (see GCBO)
+% --- Executes on button press in toggleliveforward.
+function toggleliveforward_Callback(hObject, eventdata, handles)
+% hObject    handle to toggleliveforward (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hint: get(hObject,'Value') returns toggle state of togglelive
-
+% Hint: get(hObject,'Value') returns toggle state of toggleliveforward
+handles.metricdata.toggleliveforwardkinematics = get(hObject,'Value');
+guidata(hObject,handles)
+%display(handles.metricdata.toggleliveforwardkinematics);
 
 % --- Executes on key press with focus on joint1 and none of its controls.
 function joint1_KeyPressFcn(hObject, eventdata, handles)
@@ -704,3 +718,58 @@ function joint1_KeyPressFcn(hObject, eventdata, handles)
 %	Character: character interpretation of the key(s) that was pressed
 %	Modifier: name(s) of the modifier key(s) (i.e., control, shift) pressed
 % handles    structure with handles and user data (see GUIDATA)
+
+function forwardKinematics( theta1, theta2, theta3, theta4, theta5 )
+
+%theta1 from -100  to 90 degrees
+%theta2 from 0     to 180 degrees
+%theta3 from 0     to -170 degrees
+%theta4 from -180  to 0 degrees
+%theta5 from 0     to 180 degrees
+
+q1 = theta1*pi/180;
+q2 = theta2*pi/180;
+q3 = theta3*pi/180;
+q4 = theta4*pi/180;
+q5 = theta5*pi/180;
+
+%% Link Lengths
+d1 = 80;
+a3 = 155;
+a4 = 153;
+d5 = 33;
+dE = 65;
+
+%% Plot the robotic arm
+x0 = 0;
+y0 = 0;
+z0 = d1;
+
+x1 = 0 ;
+y1 = 0 ;
+z1 = d1 ;
+
+x2 =  a3*cos(q1)*cos(q2);
+y2 =  a3*cos(q2)*sin(q1);
+z2 =  d1 + a3*sin(q2);
+
+x3= cos(q1)*(a4*cos(q2 + q3) + a3*cos(q2));
+y3= sin(q1)*(a4*cos(q2 + q3) + a3*cos(q2));
+z3= d1 + a4*sin(q2 + q3) + a3*sin(q2);
+
+x4 =  cos(q1)*(a4*cos(q2 + q3) + a3*cos(q2) - d5*sin(q2 + q3 + q4));
+y4 = sin(q1)*(a4*cos(q2 + q3) + a3*cos(q2) - d5*sin(q2 + q3 + q4));
+z4 =   d1 + a4*sin(q2 + q3) + a3*sin(q2) + d5*cos(q2 + q3 + q4);
+
+xe =  cos(q1)*(a4*cos(q2 + q3) + a3*cos(q2) - (d5+dE)*sin(q2 + q3 + q4))
+ye =  sin(q1)*(a4*cos(q2 + q3) + a3*cos(q2) - (d5+dE)*sin(q2 + q3 + q4))
+ze =  d1 + a4*sin(q2 + q3) + a3*sin(q2) + (d5+dE)*cos(q2 + q3 + q4)
+
+i=1;
+    xx = [ x0(i); x1(i); x2(i); x3(i); x4(i); xe(i) ];
+    yy = [ y0(i); y1(i); y2(i); y3(i); y4(i); ye(i) ];
+    zz = [ z0(i); z1(i); z2(i); z3(i); z4(i); ze(i) ];
+    
+    
+    plot3(xx,yy,zz,'ko-','Linewidth',4)
+    axis([-300 300 -300 300 -300 300])
