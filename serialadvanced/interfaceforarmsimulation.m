@@ -22,7 +22,7 @@ function varargout = interfaceforarmsimulation(varargin)
 
 % Edit the above text to modify the response to help interfaceforarmsimulation
 
-% Last Modified by GUIDE v2.5 12-Dec-2014 11:40:30
+% Last Modified by GUIDE v2.5 12-Dec-2014 12:35:04
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -61,11 +61,20 @@ handles.metricdata.joint4 = 0;
 handles.metricdata.joint5 = 0;
 handles.metricdata.toggleliveforwardkinematics = 0;
 
+handles.metricdata.xcoordinate = 0;
+handles.metricdata.ycoordinate  = 0;
+handles.metricdata.zcoordinate  = 0;
+
 set(handles.joint1, 'String', handles.metricdata.joint1);
 set(handles.joint2, 'String', handles.metricdata.joint2);
 set(handles.joint3, 'String', handles.metricdata.joint3);
 set(handles.joint4, 'String', handles.metricdata.joint4);
 set(handles.joint5, 'String', handles.metricdata.joint5);
+
+set(handles.xcoordinate, 'String', handles.metricdata.xcoordinate);
+set(handles.ycoordinate, 'String', handles.metricdata.ycoordinate);
+set(handles.zcoordinate, 'String', handles.metricdata.zcoordinate);
+
 %set(handles.toggleliveforward, 'String', handles.metricdata.toggleliveforward);
 
 % Update handles structure
@@ -530,42 +539,84 @@ function position5button_Callback(hObject, eventdata, handles)
 % hObject    handle to position5button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+theta1=90;       %from -100  to 90 degrees
+theta2=90;     %from 0     to 180 degrees
+theta3=-90;    %from 0     to -170 degrees
+theta4=-180;    %from -180  to 0 degrees
+theta5=0;       %from 0     to 180 degrees
 
+forwardKinematics( theta1, theta2, theta3, theta4, theta5 )
 
 % --- Executes on button press in position4button.
 function position4button_Callback(hObject, eventdata, handles)
 % hObject    handle to position4button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+theta1=90;       %from -100  to 90 degrees
+theta2=90;     %from 0     to 180 degrees
+theta3=-115;    %from 0     to -170 degrees
+theta4=-148;    %from -180  to 0 degrees
+theta5=0;       %from 0     to 180 degrees
 
+forwardKinematics( theta1, theta2, theta3, theta4, theta5 )
 
 % --- Executes on button press in position3button.
 function position3button_Callback(hObject, eventdata, handles)
 % hObject    handle to position3button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+theta1=90;       %from -100  to 90 degrees
+theta2=90;     %from 0     to 180 degrees
+theta3=-90;    %from 0     to -170 degrees
+theta4=-180;    %from -180  to 0 degrees
+theta5=0;       %from 0     to 180 degrees
 
+forwardKinematics( theta1, theta2, theta3, theta4, theta5 )
 
 % --- Executes on button press in position2button.
 function position2button_Callback(hObject, eventdata, handles)
 % hObject    handle to position2button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+theta1=0;       %from -100  to 90 degrees
+theta2=90;     %from 0     to 180 degrees
+theta3=-90;    %from 0     to -170 degrees
+theta4=-180;    %from -180  to 0 degrees
+theta5=0;       %from 0     to 180 degrees
 
+forwardKinematics( theta1, theta2, theta3, theta4, theta5 )
 
 % --- Executes on button press in position1button.
 function position1button_Callback(hObject, eventdata, handles)
 % hObject    handle to position1button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+theta1=0;       %from -100  to 90 degrees
+theta2=90;     %from 0     to 180 degrees
+theta3=-115;    %from 0     to -170 degrees
+theta4=-148;    %from -180  to 0 degrees
+theta5=0;       %from 0     to 180 degrees
 
+forwardKinematics( theta1, theta2, theta3, theta4, theta5 )
 
 % --- Executes on button press in homepositionbutton.
 function homepositionbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to homepositionbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+theta1=0;       %from -100  to 90 degrees
+theta2=90;     %from 0     to 180 degrees
+theta3=-90;    %from 0     to -170 degrees
+theta4=-180;    %from -180  to 0 degrees
+theta5=0;       %from 0     to 180 degrees
 
+forwardKinematics( theta1, theta2, theta3, theta4, theta5 )
+
+handles.metricdata.joint1 = theta1;
+handles.metricdata.joint2 = theta2;
+handles.metricdata.joint3 = theta3;
+handles.metricdata.joint4 = theta4;
+handles.metricdata.joint5 = theta5;
 
 % --- Executes on slider movement.
 function xcoordinate_Callback(hObject, eventdata, handles)
@@ -575,7 +626,17 @@ function xcoordinate_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+handles.metricdata.xcoordinate = get(hObject,'Value');
 
+if isequal (handles.metricdata.toggleliveforwardkinematics, 1)
+    theta1=handles.metricdata.xcoordinate;       %from -100  to 90 degrees
+    theta2=handles.metricdata.ycoordinate;     %from 0     to 180 degrees
+    theta3=handles.metricdata.zcoordinate;    %from 0     to -170 degrees
+
+    inverseKinematics( xcoordinate, ycoordinate, zcoordinate )
+end
+
+guidata(hObject,handles)
 
 % --- Executes during object creation, after setting all properties.
 function xcoordinate_CreateFcn(hObject, eventdata, handles)
@@ -597,7 +658,17 @@ function zcoordinate_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+handles.metricdata.zcoordinate = get(hObject,'Value');
 
+if isequal (handles.metricdata.toggleliveforwardkinematics, 1)
+    theta1=handles.metricdata.xcoordinate;       %from -100  to 90 degrees
+    theta2=handles.metricdata.ycoordinate;     %from 0     to 180 degrees
+    theta3=handles.metricdata.zcoordinate;    %from 0     to -170 degrees
+
+    inverseKinematics( xcoordinate, ycoordinate, zcoordinate )
+end
+
+guidata(hObject,handles)
 
 % --- Executes during object creation, after setting all properties.
 function zcoordinate_CreateFcn(hObject, eventdata, handles)
@@ -619,7 +690,17 @@ function ycoordinate_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+handles.metricdata.ycoordinate = get(hObject,'Value');
 
+if isequal (handles.metricdata.toggleliveforwardkinematics, 1)
+    theta1=handles.metricdata.xcoordinate;       %from -100  to 90 degrees
+    theta2=handles.metricdata.ycoordinate;     %from 0     to 180 degrees
+    theta3=handles.metricdata.zcoordinate;    %from 0     to -170 degrees
+
+    inverseKinematics( xcoordinate, ycoordinate, zcoordinate )
+end
+
+guidata(hObject,handles)
 
 % --- Executes during object creation, after setting all properties.
 function ycoordinate_CreateFcn(hObject, eventdata, handles)
@@ -773,3 +854,30 @@ i=1;
     
     plot3(xx,yy,zz,'ko-','Linewidth',4)
     axis([-300 300 -300 300 -300 300])
+
+function inverseKinematics( coordinatex, coordinatey, coordinatez )
+%UNTITLED Summary of this function goes here
+%   Detailed explanation goes here
+C=180-acos((x4^2+z4^2+a3^2-a4^2)/(2*a3*sqrt(x4^2+z4^2+a3)))-acos((a4^2+a3^2-x4^2-z4^2)/(2*a4*a3));
+
+theta1 = atan(z4/x4);
+theta2 = acos((x4^2+z4^2+a3^2-a4^2)/(2*a3*sqrt(x4^2+z4^2+a3)))+atan(z4/x4);
+theta3 = acos((a4^2+a3^2-x4^2-z4^2)/(2*a4*a3));
+%theta4 = C+atan(x4/z4)+90-F;
+theta4 = 0;
+theta5 = 0;
+
+%tests ik worked correctly
+forwardKinematics( theta1, theta2, theta3, theta4, theta5 )
+    
+    
+% --- Executes on button press in printforward.
+function printforward_Callback(hObject, eventdata, handles)
+% hObject    handle to printforward (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+display(handles.metricdata.joint1);
+display(handles.metricdata.joint2);
+display(handles.metricdata.joint3);
+display(handles.metricdata.joint4);
+display(handles.metricdata.joint5);
