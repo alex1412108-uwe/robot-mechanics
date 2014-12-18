@@ -22,7 +22,7 @@ function varargout = interfaceforarmsimulation(varargin)
 
 % Edit the above text to modify the response to help interfaceforarmsimulation
 
-% Last Modified by GUIDE v2.5 12-Dec-2014 12:35:04
+% Last Modified by GUIDE v2.5 18-Dec-2014 07:54:33
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -83,7 +83,13 @@ guidata(hObject, handles);
 % This sets up the initial plot - only do when we are invisible
 % so window can get raised using interfaceforarmsimulation.
 if strcmp(get(hObject,'Visible'),'off')
-    plot(rand(5));
+    theta1=0;       %from -100  to 90 degrees
+    theta2=90;     %from 0     to 180 degrees
+    theta3=-90;    %from 0     to -170 degrees
+    theta4=-180;    %from -180  to 0 degrees
+    theta5=0;       %from 0     to 180 degrees
+
+    forwardKinematics( theta1, theta2, theta3, theta4, theta5 )
 end
 
 % UIWAIT makes interfaceforarmsimulation wait for user response (see UIRESUME)
@@ -111,23 +117,22 @@ x=handles.metricdata.joint1
 popup_sel_index = get(handles.popupmenu1, 'Value');
 switch popup_sel_index
     case 1
-        plot(rand(5));
-    case 2
-        plot(sin(1:0.01:25.99));
-    case 3
-        bar(1:.5:10);
-    case 4
-        plot(membrane);
-    case 5
-        %surf(peaks);
-        
-theta1=handles.metricdata.joint1       %from -100  to 90 degrees
-theta2=handles.metricdata.joint2;     %from 0     to 180 degrees
-theta3=handles.metricdata.joint3;    %from 0     to -170 degrees
-theta4=handles.metricdata.joint4;    %from -180  to 0 degrees
-theta5=handles.metricdata.joint5;       %from 0     to 180 degrees
 
-forwardKinematics( theta1, theta2, theta3, theta4, theta5 )
+        theta1=handles.metricdata.joint1       %from -100  to 90 degrees
+        theta2=handles.metricdata.joint2;     %from 0     to 180 degrees
+        theta3=handles.metricdata.joint3;    %from 0     to -170 degrees
+        theta4=handles.metricdata.joint4;    %from -180  to 0 degrees
+        theta5=handles.metricdata.joint5;       %from 0     to 180 degrees
+
+        forwardKinematics( theta1, theta2, theta3, theta4, theta5 )
+
+    case 2
+        xcoordinate=handles.metricdata.xcoordinate;       %from -100  to 90 degrees
+        ycoordinate=handles.metricdata.ycoordinate;     %from 0     to 180 degrees
+        zcoordinate=handles.metricdata.zcoordinate;    %from 0     to -170 degrees
+
+        inverseKinematics( xcoordinate, ycoordinate, zcoordinate )
+        
 
 end
 
@@ -193,7 +198,7 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
      set(hObject,'BackgroundColor','white');
 end
 
-set(hObject, 'String', {'plot(rand(5))', 'plot(sin(1:0.01:25))', 'bar(1:.5:10)', 'plot(membrane)', 'surf(peaks)'});
+set(hObject, 'String', {'forward kinematics', 'inverse kinematics'});
 
 
 %*****************joint sliders*********************
@@ -333,7 +338,7 @@ function joint5_Callback(hObject, eventdata, handles)
 handles.metricdata.joint5 = get(hObject,'Value');
 
 if isequal (handles.metricdata.toggleliveforwardkinematics, 1)
-    theta1=handles.metricdata.joint1       %from -100  to 90 degrees
+    theta1=handles.metricdata.joint1;       %from -100  to 90 degrees
     theta2=handles.metricdata.joint2;     %from 0     to 180 degrees
     theta3=handles.metricdata.joint3;    %from 0     to -170 degrees
     theta4=handles.metricdata.joint4;    %from -180  to 0 degrees
@@ -629,9 +634,9 @@ function xcoordinate_Callback(hObject, eventdata, handles)
 handles.metricdata.xcoordinate = get(hObject,'Value');
 
 if isequal (handles.metricdata.toggleliveforwardkinematics, 1)
-    theta1=handles.metricdata.xcoordinate;       %from -100  to 90 degrees
-    theta2=handles.metricdata.ycoordinate;     %from 0     to 180 degrees
-    theta3=handles.metricdata.zcoordinate;    %from 0     to -170 degrees
+    xcoordinate=handles.metricdata.xcoordinate;       %from -100  to 90 degrees
+    ycoordinate=handles.metricdata.ycoordinate;     %from 0     to 180 degrees
+    zcoordinate=handles.metricdata.zcoordinate;    %from 0     to -170 degrees
 
     inverseKinematics( xcoordinate, ycoordinate, zcoordinate )
 end
@@ -661,9 +666,9 @@ function zcoordinate_Callback(hObject, eventdata, handles)
 handles.metricdata.zcoordinate = get(hObject,'Value');
 
 if isequal (handles.metricdata.toggleliveforwardkinematics, 1)
-    theta1=handles.metricdata.xcoordinate;       %from -100  to 90 degrees
-    theta2=handles.metricdata.ycoordinate;     %from 0     to 180 degrees
-    theta3=handles.metricdata.zcoordinate;    %from 0     to -170 degrees
+    xcoordinate=handles.metricdata.xcoordinate;       %from -100  to 90 degrees
+    ycoordinate=handles.metricdata.ycoordinate;     %from 0     to 180 degrees
+    zcoordinate=handles.metricdata.zcoordinate;    %from 0     to -170 degrees
 
     inverseKinematics( xcoordinate, ycoordinate, zcoordinate )
 end
@@ -693,9 +698,9 @@ function ycoordinate_Callback(hObject, eventdata, handles)
 handles.metricdata.ycoordinate = get(hObject,'Value');
 
 if isequal (handles.metricdata.toggleliveforwardkinematics, 1)
-    theta1=handles.metricdata.xcoordinate;       %from -100  to 90 degrees
-    theta2=handles.metricdata.ycoordinate;     %from 0     to 180 degrees
-    theta3=handles.metricdata.zcoordinate;    %from 0     to -170 degrees
+    xcoordinate=handles.metricdata.xcoordinate;       %from -100  to 90 degrees
+    ycoordinate=handles.metricdata.ycoordinate;     %from 0     to 180 degrees
+    zcoordinate=handles.metricdata.zcoordinate;    %from 0     to -170 degrees
 
     inverseKinematics( xcoordinate, ycoordinate, zcoordinate )
 end
@@ -807,6 +812,12 @@ function forwardKinematics( theta1, theta2, theta3, theta4, theta5 )
 %theta3 from 0     to -170 degrees
 %theta4 from -180  to 0 degrees
 %theta5 from 0     to 180 degrees
+theta1 = theta1
+theta2 = theta2
+theta3 = theta3
+theta4 = theta4
+theta5 = theta5
+
 
 q1 = theta1*pi/180;
 q2 = theta2*pi/180;
@@ -858,15 +869,33 @@ i=1;
 function inverseKinematics( coordinatex, coordinatey, coordinatez )
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
+
+d1=0;
+a3=155;
+a4=153;
+d5=33;
+dE=65;
+
+x4 = coordinatex;
+y4 = coordinatey;
+z4 = coordinatez;
+
 C=180-acos((x4^2+z4^2+a3^2-a4^2)/(2*a3*sqrt(x4^2+z4^2+a3)))-acos((a4^2+a3^2-x4^2-z4^2)/(2*a4*a3));
 
-theta1 = atan(z4/x4);
-theta2 = acos((x4^2+z4^2+a3^2-a4^2)/(2*a3*sqrt(x4^2+z4^2+a3)))+atan(z4/x4);
-theta3 = acos((a4^2+a3^2-x4^2-z4^2)/(2*a4*a3));
+theta1rad = atan(y4/x4);
+theta2rad = acos((x4^2+z4^2+a3^2-a4^2)/(2*a3*sqrt(x4^2+z4^2+a3)))+atan(z4/x4);
+theta3rad = acos((a4^2+a3^2-x4^2-z4^2)/(2*a4*a3));
 %theta4 = C+atan(x4/z4)+90-F;
-theta4 = 0;
-theta5 = 0;
 
+
+theta1 = theta1rad*180/pi
+theta2 = theta2rad*180/pi
+theta3 = theta3rad*180/pi
+theta4 = -180
+theta5 = 0
+
+plot3(coordinatex, coordinatey, coordinatez, 'ko-','Linewidth',4)
+axis([-300 300 -300 300 -300 300])
 %tests ik worked correctly
 forwardKinematics( theta1, theta2, theta3, theta4, theta5 )
     
@@ -881,3 +910,12 @@ display(handles.metricdata.joint2);
 display(handles.metricdata.joint3);
 display(handles.metricdata.joint4);
 display(handles.metricdata.joint5);
+
+
+% --- Executes during object creation, after setting all properties.
+function armdisplay_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to armdisplay (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: place code in OpeningFcn to populate armdisplay

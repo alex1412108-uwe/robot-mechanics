@@ -1,0 +1,49 @@
+[System]
+Name='genfis1f2'
+Type='sugeno'
+Version=2.0
+NumInputs=2
+NumOutputs=1
+NumRules=5
+AndMethod='prod'
+OrMethod='probor'
+ImpMethod='prod'
+AggMethod='max'
+DefuzzMethod='wtaver'
+
+[Input1]
+Name='in1'
+Range=[-232.910943719601 233.562656044033]
+NumMFs=5
+MF1='in1cluster1':'gaussmf',[81.1857987357392 87.7520035834956]
+MF2='in1cluster2':'gaussmf',[82.6073512154621 2.9571530687541]
+MF3='in1cluster3':'gaussmf',[83.9507818796295 88.1898743781389]
+MF4='in1cluster4':'gaussmf',[82.5603771655187 113.394704890196]
+MF5='in1cluster5':'gaussmf',[82.4258329448122 -151.42426685457]
+
+[Input2]
+Name='in2'
+Range=[-140.975603032472 233.778873120929]
+NumMFs=5
+MF1='in2cluster1':'gaussmf',[66.3853640156444 1.34272975002388]
+MF2='in2cluster2':'gaussmf',[66.8698049306128 109.595542235273]
+MF3='in2cluster3':'gaussmf',[66.2790541603665 -76.0015079936807]
+MF4='in2cluster4':'gaussmf',[66.1194907097821 150.09067062301]
+MF5='in2cluster5':'gaussmf',[65.5809021784835 120.640893494779]
+
+[Output1]
+Name='out1'
+Range=[0 3.1]
+NumMFs=5
+MF1='out1cluster1':'linear',[-0.00485745177600863 -0.0405231657057597 4.82691685740523]
+MF2='out1cluster2':'linear',[0.0517976532027289 0.0037856081416971 4.83745782025569]
+MF3='out1cluster3':'linear',[0.00294986803615278 -0.0354113834795068 -6.40408414993695]
+MF4='out1cluster4':'linear',[0.0288489077705129 0.0230095120795156 -8.56938407902029]
+MF5='out1cluster5':'linear',[0.0162385560272089 -0.00918560963287034 7.46520452528181]
+
+[Rules]
+1 1, 1 (1) : 1
+2 2, 2 (1) : 1
+3 3, 3 (1) : 1
+4 4, 4 (1) : 1
+5 5, 5 (1) : 1

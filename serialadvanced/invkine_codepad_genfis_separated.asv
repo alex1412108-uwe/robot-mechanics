@@ -1,0 +1,24 @@
+
+
+[ datainfull, dataoutfull, dataoutfull2, dataoutfull3 ] = generate_inputs_genfis( 0.1 , 0);
+[ datainfullchk, dataoutfullchk, dataoutfull2chk, dataoutfull3chk ] = generate_inputs_genfis( 0.1 , 0.1);
+
+
+
+
+fistmat1 = generate_genfis( datainfull, dataoutfull, datainfullchk, dataoutfullchk,1 , 'genfis1');
+progress_status = '1 done'
+%ruleview(fistmat1)
+
+fismat2 = generate_genfis( datainfull, dataoutfull2, datainfullchk, dataoutfull2chk, 1, 'genfis2' );
+progress_status = '2 done'
+%ruleview(fismat2)
+
+fismat3 = generate_genfis( datainfull, dataoutfull3, datainfullchk, dataoutfull3chk, 1,'genfis3' );
+%ruleview(fismat3)
+progress_status = '3 done'
+
+progress_status = 'finished'
+
+
+
